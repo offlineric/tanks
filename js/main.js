@@ -1,5 +1,15 @@
 d = document;
 
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+
 var TO_RADIANS = Math.PI / 180;
 
 function drawRotatedImage(image, x, y, angle) {
@@ -26,15 +36,18 @@ function drawRotatedImage(image, x, y, angle) {
 }
 
 function drawbox(x, y, color) {
+//  var undrawme = ctx.getImageData(10*x-1, 10*y-1, 12, 12);
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext("2d");
   ctx.fillStyle = color;
   ctx.fillRect(10 * x, 10 * y, 10, 10);
+//  return undrawme;
 }
 
 function undrawbox(x, y) {
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext("2d");
+//  ctx.putImageData(oldback, 10*x-1, 10*y-1)
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(10 * x - 1, 10 * y - 1, 12, 12);
 }
@@ -51,7 +64,8 @@ function drawterrain() {
   //draw terrain here
 
 
-  drawbox(tankX, tankY, "#a1f3a1");
+//  drawbox(tankX, tankY, "#a1f3a1");
+    drawRotatedImage(img, tankX, tankY, 0);
 
 
 }
@@ -63,6 +77,7 @@ function shotsfired() {
   shotA = angle;
   oldshotX = -15;
   oldshotY = -15;
+ // undrawme = ctx.getImageData(tankX + (2 * Math.cos(angle * TO_RADIANS)), tankY + (2 * Math.sin(angle * TO_RADIANS)), 12, 12);
   apower = .1 * power;
   console.log('boom');
   firing = 1;
@@ -79,8 +94,8 @@ function shotsfiring() {
   shotT += .02;
 
 
-
-
+ // oldundrawme = undrawme;
+ // undrawme = ctx.getImageData(tankX + (2 * Math.cos(angle * TO_RADIANS)), tankY + (2 * Math.sin(angle * TO_RADIANS)), 12, 12);
   drawbox(tankX + (2 * Math.cos(angle * TO_RADIANS)), tankY + (2 * Math.sin(angle * TO_RADIANS)), "#ff0000");
 
   undrawbox(oldshotX, oldshotY);
@@ -90,9 +105,7 @@ function shotsfiring() {
 
   if (shotY < tankY) {
     //console.log(shotY + " " + tankY);
-    var t = setTimeout(function () {
-      shotsfiring()
-    }, 5)
+requestAnimFrame(shotsfiring);
   } else {
     firing = 0
   }
@@ -189,7 +202,8 @@ mainloop = function () {
   document.getElementById('angle').innerHTML = "angle: " + (0 - angle);
 
   undrawbox(tankX + (2 * Math.cos(old_angle * TO_RADIANS)), tankY + (2 * Math.sin(old_angle * TO_RADIANS)));
-  drawbox(tankX, tankY, "#a1f3a1");
+  //drawbox(tankX, tankY, "#a1f3a1");
+      drawRotatedImage(img, tankX, tankY, 0);
   drawbox(tankX + (2 * Math.cos(angle * TO_RADIANS)), tankY + (2 * Math.sin(angle * TO_RADIANS)), "#ff0000");
   old_angle = angle;
 }
