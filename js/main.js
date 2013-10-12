@@ -161,6 +161,7 @@ initPlay = function () {
       angle = angle.toFixed(0);
       angle = Math.min(angle, 0);
 
+
       mainloop();
 
 

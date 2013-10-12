@@ -12,14 +12,14 @@ body, html {
 }
 
 #myCanvas {
-     border: black 10px solid !important;
+     border: black 0px solid !important;
      position: fixed;
      top: 50%;
      left: 50%;
-     margin-top: -265px;
-     margin-left: -410px;
-
-     border-bottom-right-radius: 0px;
+     margin-top: -255px;
+     margin-left: -405px;
+     box-shadow: 0px 0px 4px rgba(0,0,0,.1);
+     border-radius: 5px;
      transition: all 1s ease;
 }
 
